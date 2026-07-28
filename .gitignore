@@ -1,0 +1,55 @@
+# Prerequisites
+*.d
+
+# Compiled Object files
+*.slo
+*.lo
+*.o
+*.obj
+
+# Precompiled Headers
+*.gch
+*.pch
+
+# Linker files
+*.ilk
+
+# Debugger Files
+*.pdb
+
+# Compiled Dynamic libraries
+*.so
+*.dylib
+*.dll
+
+# Fortran module files
+*.mod
+*.smod
+
+# Compiled Static libraries
+*.lai
+*.la
+*.a
+*.lib
+
+# Executables
+*.exe
+*.out
+*.app
+
+# debug information files
+*.dwo
+
+# ── 非公開フォルダ ─────────────────────────────────────────────
+# 公開したくないもの・公開すると分かりにくくなるものを入れる。
+#   ・編集用の pptx / ppt / docx / xlsx（公開するのは PDF 化したもの）
+#   ・資料編集中の中間バックアップ
+#   ・会場や日時など、公開しない運営情報
+#   ・原価や仕入れ先を含む部品リスト
+#   ・この講習会とは別の講座の資料
+Private/
+
+# Arduino ビルド中間物
+Programs/**/build/
+*.hex
+*.elf
