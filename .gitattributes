@@ -1,0 +1,42 @@
+# 改行コードの扱いを固定する。
+#
+# これが無いと core.autocrlf の設定しだいで挙動が変わり、
+# 中身を1文字も変えていないのに大量のファイルが「変更あり」と出続ける。
+#
+#   text=auto … テキストと判定したファイルはリポジトリに LF で保存し、
+#                Windows の作業ツリーでは CRLF に戻す。
+#                バイナリは自動判定されるので、そのまま触らない。
+
+* text=auto
+
+# ── ソースコード（明示しておく）─────────────────────────────────
+*.ino    text
+*.h      text
+*.c      text
+*.cpp    text
+*.S      text
+*.py     text
+*.yaml   text
+*.md     text
+*.txt    text
+*.TXT    text
+
+# ── バイナリ（自動判定されるが、誤検出を防ぐため明示）───────────
+*.pdf    binary
+*.zip    binary
+*.png    binary
+*.PNG    binary
+*.jpg    binary
+*.jpeg   binary
+*.bmp    binary
+*.ppt    binary
+*.pptx   binary
+*.xlsx   binary
+*.docx   binary
+*.jww    binary
+*.pcb    binary
+*.sch    binary
+*.cmp    binary
+
+# ガーバー・NCドリル・DXF は ASCII なので text=auto に任せる
+# （binary にすると LF 保存済みの既存データと差分が出てしまう）
