@@ -53,3 +53,6 @@ Private/
 Programs/**/build/
 *.hex
 *.elf
+
+# Claude Code のローカル設定
+.claude/settings.local.json
