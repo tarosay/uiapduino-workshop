@@ -49,6 +49,17 @@
 #   ・この講習会とは別の講座の資料
 Private/
 
+# 編集用の pptx（公開するのは PDF 化したもの）
+*.pptx
+
+# DesignSpark が自動で作るバックアップ（~ 始まりの .pcb / .sch など）
+~*
+
+# Jw_cad のバックアップと自動保存
+*.bak
+*.BAK
+*.jw$
+
 # Arduino ビルド中間物
 Programs/**/build/
 *.hex

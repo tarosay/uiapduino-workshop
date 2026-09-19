@@ -1,0 +1,13 @@
+Pour Copper Report
+------------------
+
+Report Written:     04:54 Wednesday, September 16, 2026
+Design Path:        D:\git\github\uiapduino-workshop\Schematic\2026_09_16_URB_Block.pcb
+Design Title:       
+Created:            2022/04/10 3:23:23
+Last Saved:         2026/09/16 4:54:01
+Editing Time:       4290 min
+Units:              mm (precision 3)
+
+
+End Of Report.

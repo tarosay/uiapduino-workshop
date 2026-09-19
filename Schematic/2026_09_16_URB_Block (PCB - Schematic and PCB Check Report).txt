@@ -1,0 +1,17 @@
+Schematic and PCB Check Report
+------------------------------
+
+Report Written:     03:58 Wednesday, September 16, 2026
+Design Path:        D:\git\github\uiapduino-workshop\Schematic\2026_09_16_URB_Block.pcb
+Design Title:       
+Created:            2022/04/10 3:23:23
+Last Saved:         2026/09/16 3:55:40
+Editing Time:       4233 min
+Units:              mm (precision 3)
+
+
+Checking integrity of Schematic "D:\git\github\uiapduino-workshop\Schematic\2026_09_16_URB_Block.sch" with PCB "D:\git\github\uiapduino-workshop\Schematic\2026_09_16_URB_Block.pcb"
+====================================================================================================================================================================================
+
+
+End Of Report.
