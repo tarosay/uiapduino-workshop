@@ -5,35 +5,37 @@
 UIAPduino（CH32V003 を使った HID 対応マイコンボード、290円）を使って、
 C言語の基礎からアルゴリズムまでを体験する講習会の教材をまとめています。
 
+- 📘 紹介ページ: **[マイコンC言語基礎講座 — UIAPduino 教材](https://tarosay.github.io/uiapduino-workshop/)**（`docs/`）
 - 🌐 練習ページ: **[UIAPduino WebHID Lab](https://tarosay.github.io/uiap-hid-web/)**
-- 💬 アフターフォロー: **[Discord「コンピュータを楽しもう」](https://discord.gg/EF3kAU3XT)**
 
 ---
 
 ## 講習の流れ
 
-資料は `Documents/マイコンC言語基礎講座.pdf`（全123枚）です。
-前半は実機だけで進み、後半はブラウザ（WebHID）と組み合わせて進みます。
+資料は `Documents/マイコンC言語基礎講座.pdf`（全129枚・7部構成）です。
+前半は実機だけで進み、第3部からはブラウザ（WebHID）と組み合わせて進みます。
 
 | 部 | スライド | 内容 | 学ぶC言語 |
 |---|---|---|---|
-| — | 1–44 | マイコンとは／部材／ArduinoIDE／Lチカ／キーボードを作る | `#define` `setup()` `loop()` `pinMode` `digitalWrite` `delay` `#include` `if` |
-| 第2部 | 45–55 | WebHID とは／Echo Test | 双方向通信の考え方 |
-| 第3部 | 56–75 | HID Console／**.h と .cpp の分割** | 変数と型・演算・`for`・配列・`class`・`#ifndef`・`extern` |
-| 第4部 | 76–88 | Keyboard Practice 1 / 2 | コメント `//`・**`switch` 文**・`break`・エラーの読み方 |
-| 第5部 | 89–102 | Snake Solver | **二次元配列**・**BFS**・参照渡し `&` |
-| 第6部 | 103–118 | Snake VS（CPU 5段ラダー） | **ボロノイ**・ミニマックス・RAM の節約 |
-| — | 119–123 | 残り時間の挑戦／アフターフォロー | — |
+| — | 1–4 | 表紙／自己紹介／目次 | — |
+| 第1部 | 5–37 | マイコンにプログラムを書き込む（マイコンとは／部材／ArduinoIDE／Lチカ） | `#define` `setup()` `loop()` `pinMode` `digitalWrite` `delay` |
+| 第2部 | 38–45 | キーボードを作る（HID とは／a を打ってみる） | `#include` `if` `digitalRead` `INPUT_PULLUP` |
+| 第3部 | 46–58 | ブラウザとつなぐ（WebHID とは／Echo Test） | 双方向通信の考え方 |
+| 第4部 | 59–78 | マイコンの中を見る（HID Console／**.h と .cpp の分割**） | 変数と型・演算・`for`・配列・`class`・`#ifndef`・`extern` |
+| 第5部 | 79–91 | キーボードで練習する（Keyboard Practice 1 / 2） | コメント `//`・**`switch` 文**・`break`・エラーの読み方 |
+| 第6部 | 92–105 | スネークを解く（Snake Solver） | **二次元配列**・**BFS**・参照渡し `&` |
+| 第7部 | 106–122 | CPU と戦う（Snake VS・CPU 5段ラダー） | **ボロノイ**・ミニマックス・RAM の節約 |
+| — | 123–129 | 身についたこと／残り時間の挑戦（Rock Dodge・Maze Solver）／図解ガイド／講座のあと | — |
 
 **構成の意図**：文法を先に教えるのではなく、「不便だ」と感じてから道具を渡す順にしています。
 たとえば `switch` は、Keyboard Practice 1 でステップごとに書き込み直す面倒を体験してから導入します。
 
 前半で置いた話は後半で回収されます。
 
-- 第3部「RAM は 2048 バイトしかないから型を選ぶ」 → 第6部「`bool` 3枚 768B を `uint8_t` 1枚 256B に」
-- 第3部「通信は `.h` に押し込む」 → 第5部 `SnakeHID.h` → 第6部 `SnakeVSHID.h`
-- 第4部「`switch` と `break`」 → 第5部 `switch (buf[0])`
-- 第5部「BFS 最大空間優先」 → 第6部「それが CPU Lv3。だから Lv4 に勝てない」
+- 第4部「RAM は 2048 バイトしかないから型を選ぶ」 → 第7部「`bool` 3枚 768B を `uint8_t` 1枚 256B に」
+- 第4部「通信は `.h` に押し込む」 → 第6部 `SnakeHID.h` → 第7部 `SnakeVSHID.h`
+- 第5部「`switch` と `break`」 → 第6部 `switch (buf[0])`
+- 第6部「BFS 最大空間優先」 → 第7部「それが CPU Lv3。だから Lv4 に勝てない」
 
 ---
 
@@ -135,6 +137,7 @@ CH32V003 の Flash 上限は 16,384 バイト、RAM は 2,048 バイトです。
 
 ```
 Documents/            公開する資料（PDF・画像）
+docs/                 紹介ページ（GitHub Pages で公開。index.html と style.css、画像）
 Sketches/             講習で使うスケッチ一式
   <スケッチ名>/       ソース（各フォルダに sketch.yaml 付き）
   zip/                配布用 ZIP（Lab ページの「ZIPダウンロード」と同じ構成）

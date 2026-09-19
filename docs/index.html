@@ -1,0 +1,545 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>マイコンC言語基礎講座 — UIAPduino 教材</title>
+<meta name="description" content="290円のマイコンボード UIAPduino とブラウザ（WebHID）で、C言語の基礎から BFS・ボロノイなどのアルゴリズムまで学ぶ講座の教材一式。スライド・スケッチ・練習用Webページを公開しています。">
+<meta property="og:title" content="マイコンC言語基礎講座 — UIAPduino 教材">
+<meta property="og:description" content="290円のマイコンとブラウザで、C言語からアルゴリズムまで。スライド・スケッチ・練習用Webページを公開しています。">
+<meta property="og:type" content="website">
+<meta property="og:image" content="https://tarosay.github.io/uiapduino-workshop/images/UIAPDuinoICON-256.png">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=BIZ+UDPGothic:wght@400;700&family=BIZ+UDGothic:wght@400;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<header class="site-header">
+  <div class="wrap header-inner">
+    <a class="brand" href="#top"><img src="images/UIAPDuinoICON-256.png" alt="" width="36" height="24">マイコンC言語基礎講座</a>
+    <nav class="site-nav" aria-label="ページ内の移動">
+      <a href="#features">特徴</a>
+      <a href="#course">講座の流れ</a>
+      <a href="#lab">WebHID Lab</a>
+      <a href="#challenge">挑戦課題</a>
+      <a href="#prepare">準備</a>
+      <a href="#download">ダウンロード</a>
+    </nav>
+  </div>
+</header>
+
+<main id="top">
+
+<!-- ───────── ヒーロー ───────── -->
+<section class="hero">
+  <div class="wrap hero-inner">
+    <div class="hero-text">
+      <p class="eyebrow">UIAPduino で学ぶ マイコンC言語基礎講座 — 教材一式を公開しています</p>
+      <h1><span class="nowrap">290円のマイコンと</span><span class="nowrap">ブラウザで、</span><br>C言語から<span class="nowrap">アルゴリズムまで。</span></h1>
+      <p class="lead">
+        UIAPduino（CH32V003）は、USB でつなぐとキーボードやマウスとして動く小さなマイコンボードです。
+        この講座では、LED の点滅（Lチカ）から始めて、ブラウザ上の盤面でスネークを動かし、
+        BFS やボロノイで CPU と対戦するところまで進みます。
+        スライド・スケッチ・練習用 Web ページをすべて公開しているので、授業や部活動の教材としてそのまま使えます。
+      </p>
+      <div class="hero-actions">
+        <a class="btn btn-primary" href="https://github.com/tarosay/uiapduino-workshop/raw/main/Documents/%E3%83%9E%E3%82%A4%E3%82%B3%E3%83%B3C%E8%A8%80%E8%AA%9E%E5%9F%BA%E7%A4%8E%E8%AC%9B%E5%BA%A7.pdf">講座スライドを見る（PDF）</a>
+        <a class="btn btn-secondary" href="https://tarosay.github.io/uiap-hid-web/">WebHID Lab を開く</a>
+      </div>
+    </div>
+    <figure class="hero-figure">
+      <img src="images/UIAPDuinoICON-256.png" alt="UIAPduino のイラスト" width="280" height="190">
+      <dl class="spec">
+        <div><dt>価格</dt><dd>290円</dd></div>
+        <div><dt>Flash</dt><dd>16 KB</dd></div>
+        <div><dt>RAM</dt><dd>2 KB</dd></div>
+        <div><dt>ドライバ</dt><dd>不要</dd></div>
+      </dl>
+    </figure>
+  </div>
+</section>
+
+<!-- ───────── 特徴 ───────── -->
+<section id="features" class="section">
+  <div class="wrap">
+    <h2 class="section-title"><span class="num">01</span>この教材の特徴</h2>
+    <div class="feature-grid">
+      <article class="feature">
+        <h3>1人290円、はんだ付けなし</h3>
+        <p>マイコンはブレッドボードに挿すだけです。用意するのはパソコンと USB ケーブル、タクトスイッチ1個くらいです。LED はボード上のもの（Pin-2）を使います。</p>
+      </article>
+      <article class="feature">
+        <h3>画面と盤面はブラウザが用意する</h3>
+        <p>WebHID を使うと、ブラウザとマイコンが双方向につながります。盤面・迷路・座標はブラウザが持つので、マイコン側は「考えて答えを返す」部分だけを書けば動きます。そのぶん C言語そのものに集中できます。</p>
+      </article>
+      <article class="feature">
+        <h3>不便を感じてから道具を渡す</h3>
+        <p>文法を先に並べることはしません。たとえば <code>switch</code> 文は、Keyboard Practice 1 で「ステップを変えるたびに書き込み直す」面倒を体験してから、その解決策として導入します。</p>
+      </article>
+      <article class="feature">
+        <h3>前半の話が、後半で回収される</h3>
+        <ul class="recall">
+          <li>「RAM は 2048 バイト、だから型を選ぶ」<br>→ <code>bool</code> 3枚 768B を <code>uint8_t</code> 1枚 256B に</li>
+          <li>「通信は <code>.h</code> に押し込む」<br>→ <code>SnakeHID.h</code> → <code>SnakeVSHID.h</code></li>
+          <li>「BFS 最大空間優先」<br>→ それが CPU Lv3。だから Lv4 に勝てない</li>
+        </ul>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ───────── 講座の流れ ───────── -->
+<section id="course" class="section section-alt">
+  <div class="wrap">
+    <h2 class="section-title"><span class="num">02</span>講座の流れ — 7部構成・スライド129枚</h2>
+    <p class="section-lead">
+      前半は実機だけで進み、第3部からはブラウザ（WebHID Lab）と組み合わせます。
+      各部で使う Lab ページは、そのまま授業の実習として使えます。
+    </p>
+
+    <ol class="parts">
+      <li class="part">
+        <div class="part-head">
+          <span class="part-no">第1部</span>
+          <h3>マイコンにプログラムを書き込む</h3>
+          <span class="slides-range">スライド 5〜37</span>
+        </div>
+        <div class="part-body">
+          <div class="part-text">
+            <p>マイコンとは何か、部材の紹介、Arduino IDE の使い方から始めます。スケッチ例の Blink でボード上の LED を点滅させ、書き込みの手順を覚えます。</p>
+            <p class="learn"><span class="learn-label">学ぶC言語</span><code>#define</code><code>setup()</code><code>loop()</code><code>pinMode</code><code>digitalWrite</code><code>delay</code></p>
+            <p class="uses"><span class="uses-label">スケッチ</span>Blink</p>
+          </div>
+          <figure class="slide"><img src="images/slides/slide024.jpg" alt="スライド24：UIAPduino のピン配置図" loading="lazy" width="1280" height="960"><figcaption>スライド24：ピン配置図</figcaption></figure>
+        </div>
+      </li>
+
+      <li class="part">
+        <div class="part-head">
+          <span class="part-no">第2部</span>
+          <h3>キーボードを作る</h3>
+          <span class="slides-range">スライド 38〜45</span>
+        </div>
+        <div class="part-body">
+          <div class="part-text">
+            <p>HID（Human Interface Device）の仕組みを知り、タクトスイッチを押すとパソコンに「a」が入力されるキーボードを作ります。</p>
+            <p class="learn"><span class="learn-label">学ぶC言語</span><code>#include</code><code>if</code><code>digitalRead</code><code>INPUT_PULLUP</code></p>
+            <p class="uses"><span class="uses-label">スケッチ</span>A_Key（講座中に手で打ち込む）</p>
+          </div>
+          <figure class="slide"><img src="images/slides/slide039.jpg" alt="スライド39：UIAPduino でキーボード入力をする仕組み" loading="lazy" width="1280" height="960"><figcaption>スライド39：HID でキーボードを作る仕組み</figcaption></figure>
+        </div>
+      </li>
+
+      <li class="part">
+        <div class="part-head">
+          <span class="part-no">第3部</span>
+          <h3>ブラウザとつなぐ</h3>
+          <span class="slides-range">スライド 46〜58</span>
+        </div>
+        <div class="part-body">
+          <div class="part-text">
+            <p>WebHID でブラウザとマイコンを双方向につなぎます。送ったものがそのまま返ってくる Echo Test で、通信の考え方をつかみます。</p>
+            <p class="learn"><span class="learn-label">学ぶC言語</span><code>uint8_t buf[16]</code><code>WebHID.recv()</code><code>WebHID.send()</code><code>millis()</code></p>
+            <p class="uses"><span class="uses-label">Lab</span><a href="https://tarosay.github.io/uiap-hid-web/echo.html">Echo Test</a></p>
+          </div>
+          <figure class="slide"><img src="images/slides/slide055.jpg" alt="スライド55：Echo Test で双方向になっていることを確かめる" loading="lazy" width="1280" height="960"><figcaption>スライド55：双方向通信を確かめる</figcaption></figure>
+        </div>
+      </li>
+
+      <li class="part">
+        <div class="part-head">
+          <span class="part-no">第4部</span>
+          <h3>マイコンの中を見る</h3>
+          <span class="slides-range">スライド 59〜78</span>
+        </div>
+        <div class="part-body">
+          <div class="part-text">
+            <p>HID Console に <code>hid.Println()</code> で値を出して、マイコンの中で何が起きているかを見えるようにします。そのうえで変数・型・配列を学び、スケッチを <code>.ino</code>／<code>.h</code>／<code>.cpp</code> の3つに分ける理由を説明します。</p>
+            <p class="learn"><span class="learn-label">学ぶC言語</span><code>変数と型</code><code>演算</code><code>for</code><code>配列</code><code>class</code><code>public / private</code><code>#ifndef</code><code>extern</code></p>
+            <p class="uses"><span class="uses-label">Lab</span><a href="https://tarosay.github.io/uiap-hid-web/hid-console.html">HID Console</a></p>
+          </div>
+          <figure class="slide"><img src="images/slides/slide071.jpg" alt="スライド71：ファイルが3つに分かれている" loading="lazy" width="1280" height="960"><figcaption>スライド71：.ino / .h / .cpp の役割</figcaption></figure>
+        </div>
+      </li>
+
+      <li class="part">
+        <div class="part-head">
+          <span class="part-no">第5部</span>
+          <h3>キーボードで練習する</h3>
+          <span class="slides-range">スライド 79〜91</span>
+        </div>
+        <div class="part-body">
+          <div class="part-text">
+            <p>文字入力・カーソル移動・Backspace・Enter・Home の5ステップを練習します。1回目はコメントで切り替えて書き込み直し、2回目は <code>switch</code> 文に書き直して、ブラウザからステップを選べるようにします。わざと設定を間違えて、エラーメッセージの読み方も体験します。</p>
+            <p class="learn"><span class="learn-label">学ぶC言語</span><code>//</code><code>/* */</code><code>switch</code><code>case</code><code>break</code><code>エラーの読み方</code></p>
+            <p class="uses"><span class="uses-label">Lab</span><a href="https://tarosay.github.io/uiap-hid-web/keyboard.html">Keyboard Practice</a>・<a href="https://tarosay.github.io/uiap-hid-web/keyboard2.html">Keyboard Practice 2</a></p>
+          </div>
+          <figure class="slide"><img src="images/slides/slide089.jpg" alt="スライド89：switch 文の書き方" loading="lazy" width="1280" height="960"><figcaption>スライド89：switch 文の書き方</figcaption></figure>
+        </div>
+      </li>
+
+      <li class="part">
+        <div class="part-head">
+          <span class="part-no">第6部</span>
+          <h3>スネークを解く</h3>
+          <span class="slides-range">スライド 92〜105</span>
+        </div>
+        <div class="part-body">
+          <div class="part-text">
+            <p>16×16 の盤面で岩を避けながら伸び続けるスネークを、マイコン側のプログラムで動かします。「ぶつからない方向」だけではすぐ詰まることを体験してから、「進んだ先が広いほう」を選ぶ BFS（幅優先探索）に進みます。</p>
+            <p class="learn"><span class="learn-label">学ぶC言語</span><code>二次元配列</code><code>関数</code><code>参照渡し &amp;</code><code>continue</code><code>BFS</code></p>
+            <p class="uses"><span class="uses-label">Lab</span><a href="https://tarosay.github.io/uiap-hid-web/snake.html">Snake Solver</a></p>
+          </div>
+          <figure class="slide"><img src="images/slides/slide101.jpg" alt="スライド101：BFS で行けるマスを数える" loading="lazy" width="1280" height="960"><figcaption>スライド101：BFS の手順</figcaption></figure>
+        </div>
+      </li>
+
+      <li class="part">
+        <div class="part-head">
+          <span class="part-no">第7部</span>
+          <h3>CPU と戦う</h3>
+          <span class="slides-range">スライド 106〜122</span>
+        </div>
+        <div class="part-body">
+          <div class="part-text">
+            <p>2匹のスネークが陣地を取り合う対戦です。盤面を1マス1バイトにまとめて RAM を節約し、正面衝突の判定を学びます。配布スケッチは CPU Lv3 と互角で、Lv4 のボロノイ（自分の陣地 − 相手の陣地）が壁になります。</p>
+            <p class="learn"><span class="learn-label">学ぶC言語</span><code>RAM の節約</code><code>const</code><code>ボロノイ</code><code>ミニマックスの考え方</code></p>
+            <p class="uses"><span class="uses-label">Lab</span><a href="https://tarosay.github.io/uiap-hid-web/snake-vs.html">Snake VS</a></p>
+          </div>
+          <figure class="slide"><img src="images/slides/slide108.jpg" alt="スライド108：CPU ラダーの一覧" loading="lazy" width="1280" height="960"><figcaption>スライド108：CPU 5段ラダー</figcaption></figure>
+        </div>
+      </li>
+    </ol>
+
+    <aside class="summary-box">
+      <h3>講座全体で身につくこと（スライド123より）</h3>
+      <ul class="chips">
+        <li><code>#define</code> / <code>setup()</code> / <code>loop()</code> / <code>pinMode</code> / <code>digitalWrite</code> / <code>delay</code></li>
+        <li><code>if</code> / <code>for</code> / <code>while</code> / <code>switch</code> と <code>break</code></li>
+        <li>変数と型、演算、コメント</li>
+        <li>配列、二次元配列</li>
+        <li>関数、引数、戻り値、参照（<code>&amp;</code>）</li>
+        <li><code>class</code>、<code>public</code> と <code>private</code>、<code>.h</code> と <code>.cpp</code> の分割</li>
+        <li>BFS、そしてアルゴリズムで勝負する楽しさ</li>
+      </ul>
+    </aside>
+  </div>
+</section>
+
+<!-- ───────── WebHID Lab ───────── -->
+<section id="lab" class="section">
+  <div class="wrap">
+    <h2 class="section-title"><span class="num">03</span>WebHID Lab で学ぶ C言語</h2>
+    <div class="lab-intro">
+      <div>
+        <p class="section-lead">
+          講座の後半は、練習用の Web サイト
+          <a href="https://tarosay.github.io/uiap-hid-web/"><strong>UIAPduino WebHID Lab</strong></a> と組み合わせて進みます。
+          Chrome か Edge でページを開いて「デバイスを選択して接続」を押すだけで、UIAPduino とつながります。インストールは要りません。
+        </p>
+        <p>各ページには、接続ボタン・ワークエリア・通信ログ・<strong>スケッチのソースと ZIP ダウンロード</strong>・段階的なヒントがそろっています。授業の実習ページとしても、生徒が家で続きをやるページとしても使えます。</p>
+      </div>
+      <figure class="shot"><img src="images/lab/index.jpg" alt="UIAPduino WebHID Lab のトップページ" loading="lazy" width="1280" height="860"></figure>
+    </div>
+
+    <h3 class="group-title">基礎 — 通信と文法を身につける</h3>
+    <div class="card-grid">
+      <a class="lab-card" href="https://tarosay.github.io/uiap-hid-web/echo.html">
+        <div class="lab-card-body">
+          <h4>Echo Test</h4>
+          <p>16 バイトを送ると、そのまま返ってくるだけのページです。ブラウザ → マイコン、マイコン → ブラウザの両方向と、1秒ごとのカウンターを確かめます。</p>
+          <p class="meta">スケッチ：WebHIDTest ／ 第3部</p>
+        </div>
+      </a>
+      <a class="lab-card" href="https://tarosay.github.io/uiap-hid-web/hid-console.html">
+        <div class="lab-card-body">
+          <h4>HID Console</h4>
+          <p><code>hid.Print()</code> / <code>hid.Println()</code> の出力をブラウザに表示します。画面のないマイコンでも、変数の値やどこまで実行されたかが見えるようになります。</p>
+          <p class="meta">スケッチ：HidPrint ／ 第4部</p>
+        </div>
+      </a>
+      <a class="lab-card" href="https://tarosay.github.io/uiap-hid-web/keyboard.html">
+        <div class="lab-card-body">
+          <h4>Keyboard Practice</h4>
+          <p>UIAPduino をキーボードとして使い、文字入力・カーソル移動・Backspace・Enter・Home を5ステップで練習します。ステップはコメントで切り替えます。</p>
+          <p class="meta">スケッチ：KeyboardPractice ／ 第5部</p>
+        </div>
+      </a>
+      <a class="lab-card" href="https://tarosay.github.io/uiap-hid-web/keyboard2.html">
+        <div class="lab-card-body">
+          <h4>Keyboard Practice 2 — switch 文</h4>
+          <p>同じ5ステップを <code>switch</code> 文で書き直します。1回書き込めば、ブラウザからステップを自由に切り替えて何度でも実行できます。</p>
+          <p class="meta">スケッチ：KeyboardSwitch ／ 第5部</p>
+        </div>
+      </a>
+    </div>
+
+    <div class="shot-row">
+      <figure class="shot"><img src="images/lab/hid-console.jpg" alt="HID Console の画面" loading="lazy" width="1280" height="860"><figcaption>HID Console：マイコンの出力がこの黒い画面に出ます</figcaption></figure>
+      <figure class="shot"><img src="images/lab/keyboard2.jpg" alt="Keyboard Practice 2 の画面" loading="lazy" width="1280" height="860"><figcaption>Keyboard Practice 2：switch 文の説明とステップ切り替え</figcaption></figure>
+    </div>
+
+    <h3 class="group-title">アルゴリズム — 考えて、答えを返す</h3>
+    <p class="group-lead">盤面や迷路はブラウザが管理し、UIAPduino は「次にどちらへ進むか」だけを返します。書くのはアルゴリズムの部分だけです。</p>
+    <div class="card-grid">
+      <a class="lab-card" href="https://tarosay.github.io/uiap-hid-web/snake.html">
+        <div class="lab-card-body">
+          <h4>Snake Solver</h4>
+          <p>16×16 の盤面で、岩を避けながら決められた歩数だけ伸び続けます。レベルが上がるたびに岩が3個増えます。二次元配列で盤面を覚え、BFS で「行ける広さ」を数えて進む方向を決めます。</p>
+          <p class="meta">スケッチ：SnakeSolver ／ 第6部</p>
+        </div>
+      </a>
+      <a class="lab-card" href="https://tarosay.github.io/uiap-hid-web/snake-vs.html">
+        <div class="lab-card-body">
+          <h4>Snake VS</h4>
+          <p>自分のアルゴリズムが CPU と陣地を取り合う対戦スネークです。CPU 5段ラダーを3本勝負で勝ち上がります。2台の UIAPduino を直接戦わせる 2P 対戦とランキングもあります。</p>
+          <p class="meta">スケッチ：SnakeVS ／ 第7部</p>
+        </div>
+      </a>
+      <a class="lab-card" href="https://tarosay.github.io/uiap-hid-web/rock-dodge.html">
+        <div class="lab-card-body">
+          <h4>Rock Dodge</h4>
+          <p>落ちてくる岩をよけながら得点アイテムを拾います。安全な場所にいるだけではノルマに届きません。危険を承知でどこまで稼ぎに出るか、その判断をプログラムに書きます。</p>
+          <p class="meta">スケッチ：RockDodge ／ 挑戦課題</p>
+        </div>
+      </a>
+      <a class="lab-card" href="https://tarosay.github.io/uiap-hid-web/maze-solver.html">
+        <div class="lab-card-body">
+          <h4>Maze Solver</h4>
+          <p>ブラウザが出す 15×15 の迷路を、UIAPduino が自分で解きます。<code>solveMaze()</code> に右手法 → DFS → BFS と実装を上げていきます。ゴールすると次の迷路へ進みます。</p>
+          <p class="meta">スケッチ：MazeSolver ／ 挑戦課題</p>
+        </div>
+      </a>
+    </div>
+
+    <div class="shot-row">
+      <figure class="shot"><img src="images/lab/snake-vs.jpg" alt="Snake VS の画面" loading="lazy" width="1280" height="860"><figcaption>Snake VS：対戦モードの選択と盤面</figcaption></figure>
+      <figure class="shot"><img src="images/lab/maze-solver.jpg" alt="Maze Solver の画面" loading="lazy" width="1280" height="860"><figcaption>Maze Solver：ブラウザが出す 15×15 の迷路</figcaption></figure>
+    </div>
+
+    <div class="guide-block">
+      <h3 class="group-title">図解ガイド — コードを読む前に、動きを図で見る</h3>
+      <p class="group-lead">
+        4つのゲームには、それぞれ図解ガイドがあります。16×16 の盤面の図の上で、配列の中身や BFS の広がり方を1段階ずつ追えます。
+        「図でつかんでから、コードに戻る」ための教材です。Snake Solver・Snake VS・Rock Dodge のガイドの最後には、<code>.ino</code> 全体を一行ずつ説明した解説も付いています。
+      </p>
+      <div class="guide-grid">
+        <a class="guide-card" href="https://tarosay.github.io/uiap-hid-web/snake-solver-guide.html">
+          <img src="images/lab/snake-solver-guide-crop.jpg" alt="Snake Solver 図解ガイド：岩の座標が1個ずつ届いて配列に記録される図" loading="lazy" width="850" height="670">
+          <div class="guide-card-body">
+            <h4>Snake Solver 図解ガイド</h4>
+            <p class="guide-sub">スネークの「記憶」を盤面で見てみよう</p>
+            <p>2枚の <code>bool</code> 配列で盤面を覚える、X と Y の向き、岩の受信、<code>countReachable()</code> で4方向を比べるところまで。</p>
+          </div>
+        </a>
+        <a class="guide-card" href="https://tarosay.github.io/uiap-hid-web/snake-vs-guide.html">
+          <img src="images/lab/snake-vs-guide-crop.jpg" alt="Snake VS 図解ガイド：盤面を空にしてから岩を1個ずつ記録する図" loading="lazy" width="850" height="680">
+          <div class="guide-card-body">
+            <h4>Snake VS 図解ガイド</h4>
+            <p class="guide-sub">2匹ぶんの「記憶」と1手の決め方を見てみよう</p>
+            <p>1マスを1バイトで表す、取り合いになるマス、BFS で生き残れる広さを数える。配布スケッチを超えて勝つためのヒントもあります。</p>
+          </div>
+        </a>
+        <a class="guide-card" href="https://tarosay.github.io/uiap-hid-web/rock-dodge-guide.html">
+          <img src="images/lab/rock-dodge-guide-crop.jpg" alt="Rock Dodge 図解ガイド：盤面を列X×未来時刻tに変換した図" loading="lazy" width="850" height="640">
+          <div class="guide-card-body">
+            <h4>Rock Dodge 図解ガイド</h4>
+            <p class="guide-sub">落ちてくる未来を時間方向に読む</p>
+            <p>盤面を「列 X × 未来の時刻 t」に置き換え、<code>safeAt(x, t)</code> で生き残れる経路を探します。空間の探索を時間の探索に読み替える考え方です。</p>
+          </div>
+        </a>
+        <a class="guide-card" href="https://tarosay.github.io/uiap-hid-web/maze-solver-guide.html">
+          <img src="images/lab/maze-solver-guide-crop.jpg" alt="Maze Solver 図解ガイド：BFS がスタートから波紋のように広がる図" loading="lazy" width="850" height="600">
+          <div class="guide-card-body">
+            <h4>Maze Solver 図解ガイド</h4>
+            <p class="guide-sub">見えない迷路を調べながら進む</p>
+            <p>「見るだけ」と「実際に進む」の使い分け、DFS とバックトラック、BFS が波紋のように広がって最短経路を見つける様子を比べます。</p>
+          </div>
+        </a>
+      </div>
+    </div>
+
+    <h3 class="group-title">講座の続きに — マウスとクラス</h3>
+    <p class="group-lead">講座では使っていませんが、同じ流れで取り組める練習ページです。</p>
+    <div class="card-grid">
+      <a class="lab-card" href="https://tarosay.github.io/uiap-hid-web/mouse.html">
+        <div class="lab-card-body">
+          <h4>Mouse Practice</h4>
+          <p>UIAPduino をマウスとして使います。クリック、四角形の頂点クリック、ドラッグ、円を描くドラッグを、<code>.ino</code> に座標を書き込む形で段階的に練習します。</p>
+          <p class="meta">スケッチ：MousePractice</p>
+        </div>
+      </a>
+      <a class="lab-card" href="https://tarosay.github.io/uiap-hid-web/mouse2.html">
+        <div class="lab-card-body">
+          <h4>Mouse Practice 2</h4>
+          <p>ブラウザからマウスの位置を受け取って動かす発展版です。C++ のクラスの学習にもなります。HID Console にも対応しています。</p>
+          <p class="meta">スケッチ：MousePractice2</p>
+        </div>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ───────── 挑戦課題 ───────── -->
+<section id="challenge" class="section section-alt">
+  <div class="wrap">
+    <h2 class="section-title"><span class="num">04</span>挑戦課題 — 授業のあとも続けられる</h2>
+    <p class="section-lead">
+      講座の残り時間や、持ち帰ってからの課題です。どのページもヒントが段階的に出るようになっていて、最後の段のコードだけは伏せてあります。
+      Snake VS と Rock Dodge にはランキング（そのパソコンのブラウザに保存）があるので、クラスの中で競い合うこともできます。
+    </p>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>課題</th><th>目標</th></tr></thead>
+        <tbody>
+          <tr><td><a href="https://tarosay.github.io/uiap-hid-web/snake-vs.html">Snake VS</a></td><td>配布スケッチは CPU Lv3 と互角で、Lv4（ボロノイ）で止まります。ボロノイを実装して Lv4 を倒します。</td></tr>
+          <tr><td><a href="https://tarosay.github.io/uiap-hid-web/snake-vs.html">Snake VS 2P</a></td><td>2台の UIAPduino を直接対戦させます。ランキングは連勝記録です。</td></tr>
+          <tr><td><a href="https://tarosay.github.io/uiap-hid-web/rock-dodge.html">Rock Dodge</a></td><td>安全な場所に乗っているだけではノルマに届きません。どこまで稼ぎに出るか、採算の判断が勝負です。</td></tr>
+          <tr><td><a href="https://tarosay.github.io/uiap-hid-web/maze-solver.html">Maze Solver</a></td><td><code>solveMaze()</code> に右手法 → DFS → BFS と実装を上げていきます。</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="note">Snake VS と Rock Dodge では、スケッチの <code>#define PLAYER_NAME</code> に自分の名前（半角英数12文字まで）を書いて使います。2台で対戦するときは、必ずお互い違う名前にしてください。</p>
+  </div>
+</section>
+
+<!-- ───────── 準備 ───────── -->
+<section id="prepare" class="section">
+  <div class="wrap">
+    <h2 class="section-title"><span class="num">05</span>準備するもの</h2>
+
+    <h3 class="group-title">部材（1人分）</h3>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>品目</th><th>型番・備考</th><th>入手先</th></tr></thead>
+        <tbody>
+          <tr><td>マイコン</td><td>UIAPduino（HID ProMicro CH32V003）290円</td><td><a href="https://www.switch-science.com/products/9914">スイッチサイエンス</a></td></tr>
+          <tr><td>ブレッドボード</td><td>EIC-801</td><td><a href="https://akizukidenshi.com/catalog/g/g100315/">秋月電子通商</a></td></tr>
+          <tr><td>ピンヘッダ</td><td>マイコン基板用。必要な分を折って使う</td><td><a href="https://akizukidenshi.com/catalog/g/g100167/">秋月電子通商</a></td></tr>
+          <tr><td>ジャンパーワイヤ</td><td>コネクター付ケーブル（オス-オス）。1本ずつ切り離して使う</td><td><a href="https://akizukidenshi.com/catalog/g/g115869/">秋月電子通商</a></td></tr>
+          <tr><td>USB ケーブル</td><td>Type-A → Type-C</td><td><a href="https://akizukidenshi.com/catalog/g/g117017/">秋月電子通商</a></td></tr>
+          <tr><td>タクトスイッチ</td><td>押すとオンになるもの</td><td><a href="https://akizukidenshi.com/catalog/g/g103649/">秋月電子通商</a></td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="note">UIAPduino は、足を上にそろえてまっすぐ縦にブレッドボードへ挿します。タクトスイッチは GND と Pin-3 につなぎます（押すと Pin-3 が LOW になります）。</p>
+
+    <div class="prep-grid">
+      <article class="prep-card">
+        <h3>パソコン</h3>
+        <ul>
+          <li>Windows 11 64ビット版（Intel / AMD の CPU）。ARM 版 Windows は対象外です</li>
+          <li>CPU は Intel N100 / Core i3 以上（おすすめは Core i5 / Ryzen 5 以上）、メモリ 8GB 以上（おすすめ 16GB）、空き容量 10GB 以上</li>
+          <li>Windows Update を済ませて最新の状態にしておく（HID 接続が安定します）</li>
+          <li>Windows のユーザーフォルダー名が半角英数字だけであること（例：<code>C:\Users\student</code>）</li>
+          <li>USB Type-A の端子（ない場合はデータ通信に対応した両端 Type-C のケーブル）</li>
+        </ul>
+        <p class="caution"><strong>学校が管理しているパソコンを使う場合</strong>は、アプリのインストールと USB 機器の利用が制限されていないかを先に確認してください。</p>
+      </article>
+      <article class="prep-card">
+        <h3>ソフトウェア</h3>
+        <ol>
+          <li><a href="https://www.arduino.cc/en/software">Arduino IDE 2</a> をインストール</li>
+          <li>基本設定の「追加のボードマネージャの URL」に次を追加<br><code class="url">https://raw.githubusercontent.com/tarosay/board_manager_files/main/package_uiap_hid_index.json</code></li>
+          <li>ボードマネージャで「UIAP」と検索し、UIAPduino HID をインストール</li>
+          <li>ボードは「UIAPduino HID → HID ProMicro CH32V003」を選ぶ</li>
+          <li>ブラウザは <strong>Chrome または Edge</strong>（WebHID は Firefox・Safari では動きません）</li>
+        </ol>
+        <p class="note-sm">ボードパッケージとライブラリの詳細は <a href="https://github.com/tarosay/arduino_core_ch32">arduino_core_ch32</a> を参照してください。手順は画面つきで「事前準備など」の PDF にまとめています。</p>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ───────── ダウンロード ───────── -->
+<section id="download" class="section section-alt">
+  <div class="wrap">
+    <h2 class="section-title"><span class="num">06</span>資料ダウンロード</h2>
+
+    <div class="doc-grid">
+      <a class="doc-card" href="https://github.com/tarosay/uiapduino-workshop/raw/main/Documents/%E3%83%9E%E3%82%A4%E3%82%B3%E3%83%B3C%E8%A8%80%E8%AA%9E%E5%9F%BA%E7%A4%8E%E8%AC%9B%E5%BA%A7.pdf">
+        <span class="doc-type">PDF</span>
+        <h3>マイコンC言語基礎講座</h3>
+        <p>講座のスライド全129枚。7部構成で、Lチカから Snake VS のボロノイまで。</p>
+        <span class="doc-size">約 8 MB</span>
+      </a>
+      <a class="doc-card" href="https://github.com/tarosay/uiapduino-workshop/raw/main/Documents/%E3%83%9E%E3%82%A4%E3%82%B3%E3%83%B3C%E8%A8%80%E8%AA%9E%E5%9F%BA%E7%A4%8E%E8%AC%9B%E5%BA%A7%E3%81%AE%E4%BA%8B%E5%89%8D%E6%BA%96%E5%82%99%E3%81%AA%E3%81%A9.pdf">
+        <span class="doc-type">PDF</span>
+        <h3>事前準備など</h3>
+        <p>必要な PC 環境、半角英数字名のローカルユーザーの作り方、Arduino IDE の導入とボードの追加、テストビルド、予習用の解説（HID・ブレッドボード・スイッチ・ピン）。全39枚。</p>
+        <span class="doc-size">約 2 MB</span>
+      </a>
+    </div>
+
+    <h3 class="group-title">スケッチ（ZIP）</h3>
+    <p class="group-lead">ZIP には <code>sketch.yaml</code> が入っているので、展開して開けばボード設定が自動で入ります。<strong>Tools → USB の設定がスケッチによって違う</strong>ので注意してください。</p>
+    <div class="table-wrap">
+      <table class="sketch-table">
+        <thead><tr><th>スケッチ</th><th>Tools → USB</th><th>Lab ページ</th></tr></thead>
+        <tbody>
+          <tr><td><a href="https://github.com/tarosay/uiapduino-workshop/raw/main/Sketches/zip/Blink.zip">Blink</a></td><td>Keyboard+Mouse</td><td>—（Lチカ）</td></tr>
+          <tr><td><a href="https://github.com/tarosay/uiapduino-workshop/raw/main/Sketches/zip/A_Key.zip">A_Key</a></td><td>Keyboard+Mouse</td><td>—（キーボードを作る）</td></tr>
+          <tr><td><a href="https://github.com/tarosay/uiapduino-workshop/raw/main/Sketches/zip/WebHIDTest.zip">WebHIDTest</a></td><td>Keyboard+Mouse+WebHID</td><td><a href="https://tarosay.github.io/uiap-hid-web/echo.html">Echo Test</a></td></tr>
+          <tr><td><a href="https://github.com/tarosay/uiapduino-workshop/raw/main/Sketches/zip/HidPrint.zip">HidPrint</a></td><td>Keyboard+Mouse+WebHID</td><td><a href="https://tarosay.github.io/uiap-hid-web/hid-console.html">HID Console</a></td></tr>
+          <tr><td><a href="https://github.com/tarosay/uiapduino-workshop/raw/main/Sketches/zip/KeyboardPractice.zip">KeyboardPractice</a></td><td>Keyboard+Mouse+WebHID</td><td><a href="https://tarosay.github.io/uiap-hid-web/keyboard.html">Keyboard Practice</a></td></tr>
+          <tr><td><a href="https://github.com/tarosay/uiapduino-workshop/raw/main/Sketches/zip/KeyboardSwitch.zip">KeyboardSwitch</a></td><td>Keyboard+Mouse+WebHID</td><td><a href="https://tarosay.github.io/uiap-hid-web/keyboard2.html">Keyboard Practice 2</a></td></tr>
+          <tr class="hl"><td><a href="https://github.com/tarosay/uiapduino-workshop/raw/main/Sketches/zip/SnakeSolver.zip">SnakeSolver</a></td><td><strong>WebHID Only</strong></td><td><a href="https://tarosay.github.io/uiap-hid-web/snake.html">Snake Solver</a></td></tr>
+          <tr class="hl"><td><a href="https://github.com/tarosay/uiapduino-workshop/raw/main/Sketches/zip/SnakeVS.zip">SnakeVS</a></td><td><strong>WebHID Only</strong></td><td><a href="https://tarosay.github.io/uiap-hid-web/snake-vs.html">Snake VS</a></td></tr>
+          <tr class="hl"><td><a href="https://github.com/tarosay/uiapduino-workshop/raw/main/Sketches/zip/RockDodge.zip">RockDodge</a></td><td><strong>WebHID Only</strong></td><td><a href="https://tarosay.github.io/uiap-hid-web/rock-dodge.html">Rock Dodge</a></td></tr>
+          <tr><td><a href="https://github.com/tarosay/uiapduino-workshop/raw/main/Sketches/zip/MazeSolver.zip">MazeSolver</a></td><td>Keyboard+Mouse+WebHID</td><td><a href="https://tarosay.github.io/uiap-hid-web/maze-solver.html">Maze Solver</a></td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="note-sm">スケッチの原本は <a href="https://github.com/tarosay/uiap-hid-web">uiap-hid-web</a> にあり、各 Lab ページの「ZIP ダウンロード」からも入手できます。Blink・WebHIDTest・KeyboardPractice・KeyboardSwitch は Arduino IDE のスケッチ例にも入っています。</p>
+  </div>
+</section>
+
+<!-- ───────── つまずきやすい点 ───────── -->
+<section id="tips" class="section">
+  <div class="wrap">
+    <h2 class="section-title"><span class="num">07</span>授業でつまずきやすいところ</h2>
+    <div class="tips">
+      <article class="tip">
+        <h3>Tools → USB の設定の切り替え</h3>
+        <p>いちばん詰まりやすいところです。Snake 系（SnakeSolver / SnakeVS / RockDodge）だけが <strong>WebHID Only</strong> で、MazeSolver に移るときは <strong>Keyboard+Mouse+WebHID</strong> に戻します。WebHID を使うスケッチを WebHID なしの設定でビルドすると、次のエラーで止まるので、設定の間違いはここで気づけます。</p>
+        <pre><code>#error "WebHID ライブラリを使うには: Tools &gt; USB &gt; WebHID Only
+        または Keyboard+Mouse+WebHID を選択してください"</code></pre>
+        <p>講座では、このエラーをわざと出して「エラーは読めば答えが書いてある」ことを体験する回（第5部）を設けています。</p>
+      </article>
+      <article class="tip">
+        <h3>書き込みの手順</h3>
+        <p><strong>UIAPduino のボタンを押しながら USB を挿し、挿したらすぐ離す</strong> → Arduino IDE の書き込みボタン、の順です。Lチカ・キーボード・WebHID のどのスケッチでも同じ手順です。</p>
+      </article>
+      <article class="tip">
+        <h3>パソコンの環境</h3>
+        <p>ユーザーフォルダー名に日本語が含まれている場合は、半角英数字名のローカルユーザーを作ってから Arduino IDE をインストールします（管理者権限が必要です）。学校のパソコンでは、インストールや USB の制限も事前に確認してください。</p>
+      </article>
+      <article class="tip">
+        <h3>ブラウザと接続</h3>
+        <p>WebHID は Chrome と Edge だけで動きます。ページを開いたら「デバイスを選択して接続」を押し、一覧から UIAPduino を選びます。つながるのは、人が選んだ機器だけです。</p>
+      </article>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<footer class="site-footer">
+  <div class="wrap">
+    <div>
+      <h2>関連リポジトリ</h2>
+      <ul class="links">
+        <li><a href="https://github.com/tarosay/uiapduino-workshop">uiapduino-workshop</a> — この講座の資料・スケッチ一式</li>
+        <li><a href="https://github.com/tarosay/uiap-hid-web">uiap-hid-web</a> — WebHID Lab（練習ページ本体とスケッチの原本）</li>
+        <li><a href="https://github.com/tarosay/arduino_core_ch32">arduino_core_ch32</a> — ボードパッケージ・ライブラリ</li>
+      </ul>
+      <p class="license">スケッチなどのソースは MIT License で公開しています。</p>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>
